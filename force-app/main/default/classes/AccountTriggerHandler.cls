@@ -11,4 +11,8 @@ public with sharing class AccountTriggerHandler {
     public static void beforeDelete(Map<Id,Account> newMap) {
         AccountingService.largeCalculation(newMap);
     }
+
+    public static void async_afterChange(Map<Id,Account> accMap, Map<Id,Set<String>> fieldsChangedMap) {
+        // AccountingService.largeCalculation(accMap);
+    }
 }
