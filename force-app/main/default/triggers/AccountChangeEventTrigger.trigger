@@ -1,15 +1,5 @@
 trigger AccountChangeEventTrigger on AccountChangeEvent (after insert) {
 
-    DescribeFieldResult dfr;
-
-    Set<String> accFields = new Set<String>{'Id','Name','CreatedDate','LastModifiedDate','CreatedById','LastModifiedById'};
-    for(SObjectField sof:SObjectType.Account.fields.getMap().values()) {
-        dfr = sof.getDescribe();
-        if(dfr.isAccessible() && (dfr.isUpdateable() || dfr.isCalculated())) {
-            accFields.add(dfr.getName());
-        }
-    }
-
     Map<Id,Set<String>> fieldsChangedMap = new Map<Id,Set<String>>();
 
     for(AccountChangeEvent acc: Trigger.new) {
@@ -23,11 +13,8 @@ trigger AccountChangeEventTrigger on AccountChangeEvent (after insert) {
         }
     }
 
-    Map<Id,Account> accMap = new Map<Id,Account>();
-    for(Account acc:(List<Account>)Database.query('SELECT ' + String.join(new List<String>(accFields),',') + ' WHERE ID IN:fieldsChangedMap.set()')) {
-        accMap.put(acc.Id, acc);
-    }
-    
+    Map<Id,Account> accMap = AccountTriggerHandler.getAccounts(fieldsChangedMap.keySet());
+
     AccountTriggerHandler.async_afterChange(accMap, fieldsChangedMap);
 
 }
