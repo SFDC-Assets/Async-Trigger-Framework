@@ -6,7 +6,7 @@ trigger Async_CallTrigger on Async_Call__e (after insert) {
     }
     Map<Id,Account> accMap = AccountTriggerHandler.getAccounts(accIds);
     for(Account acc:accMap.values()) {
-        if(String.isNotBlank(acc.Weather__c) && (String.isNotBlank(acc.BillingCity) || String.isNotBlank(acc.ShippingCity))) {
+        if(String.isNotBlank(acc.BillingCity) || String.isNotBlank(acc.ShippingCity)) {
             String city = String.isNotBlank(acc.BillingCity) ? acc.BillingCity : acc.ShippingCity;
             weatherMap.put(acc.Id, city);
         }
