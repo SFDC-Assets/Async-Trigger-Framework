@@ -1,17 +1,17 @@
 public with sharing class AccountTriggerHandler {
 
     public static void afterInsert(Map<Id,Account> newMap) {
-        // AccountingService.largeCalculation(newMap);
         AccountWeatherService.fromTrigger_getWeather(newMap);
+        if(!OrgSettings.demoSwitches.isAsync__c) {
+            AccountingService.largeCalculation(newMap);
+        }
     }
 
     public static void afterUpdate(Map<Id,Account> newMap) {
-        // AccountingService.largeCalculation(newMap);
         AccountWeatherService.fromTrigger_getWeather(newMap);
-    }
-
-    public static void beforeDelete(Map<Id,Account> newMap) {
-        // AccountingService.largeCalculation(newMap);
+        if(!OrgSettings.demoSwitches.isAsync__c) {
+            AccountingService.largeCalculation(newMap);
+        }
     }
 
     public static void async_afterChange(Map<Id,Account> accMap, Map<Id,Set<String>> fieldsChangedMap) {
