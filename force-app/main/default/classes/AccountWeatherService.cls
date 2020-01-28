@@ -3,6 +3,7 @@ public with sharing class AccountWeatherService {
     public static void fromTrigger_getWeather(Map<Id,Account> accMap) {
         List<Async_Call__e> pes = new List<Async_Call__e>();
         for(Account acc:accMap.values()) {
+            // checks if weather is blank to avoid recursion
             if(String.isBlank(acc.Weather__c) && (String.isNotBlank(acc.BillingCity) || String.isNotBlank(acc.ShippingCity))) {
                 pes.add(new Async_Call__e(
                     Record_Id__c = acc.Id,
