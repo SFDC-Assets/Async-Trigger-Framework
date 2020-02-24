@@ -22,9 +22,9 @@ public virtual class AsyncTriggerBase {
     }
 
     public void triggerSetup() {
-        changeHeaderMap = AsyncTriggerService.getChangeEventHeaders();
-        fieldsChanged = AsyncTriggerService.getFieldsChanged();
-        recordsMap = AsyncTriggerService.getRecordsMap(fieldsChanged.keySet());
-        recordsMapByContext = AsyncTriggerService.getRecordsMapByContext(recordsMap, changeHeaderMap);
+        changeHeaderMap = AsyncTriggerHelper.getChangeEventHeaders();
+        fieldsChanged = AsyncTriggerHelper.getFieldsChanged();
+        recordsMap = AsyncTriggerHelper.getRecordsMap(fieldsChanged.keySet());
+        recordsMapByContext = AsyncTriggerHelper.getRecordsMapByContext(recordsMap, changeHeaderMap);
     }
 }

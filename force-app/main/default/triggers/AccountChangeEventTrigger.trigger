@@ -1,5 +1,8 @@
 trigger AccountChangeEventTrigger on AccountChangeEvent (after insert) {
 
+    // un-comment below when using AsyncTriggerFactory
+    // AsyncTriggerFactory.initialize(SObjectType.Account);
+
     // TODO: make this generic
     Map<Id,Set<String>> fieldsChangedMap = new Map<Id,Set<String>>();
 
