@@ -43,7 +43,7 @@ public with sharing class AsyncTriggerHelper {
         // GAP events are where a change is made at a system level (i.e. picklist value replace)
         for(EventBus.ChangeEventHeader ceh:changeHeaderMap.values()) {
             for(Id recordId:ceh.recordIds) {
-                recordsMapByContext.get(ceh.changeType.replace('GAP__','')).put(recordId, recordsMap.get(recordId));
+                recordsMapByContext.get(ceh.changeType.replace('GAP_','')).put(recordId, recordsMap.get(recordId));
             }
         }
 
