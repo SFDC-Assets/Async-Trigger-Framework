@@ -1,5 +1,5 @@
 trigger Async_CallTrigger on Async_Call__e (after insert) {
-
+    DebugLog.add('START Async_CallTrigger');
     Map<Id,String> weatherMap = new Map<Id,String>();
     Set<Id> accIds = new Set<Id>();
 
@@ -7,15 +7,17 @@ trigger Async_CallTrigger on Async_Call__e (after insert) {
         accIds.add(ac.Record_Id__c);
     }
 
-    Map<Id,Account> accMap = AccountTriggerHandler.getAccounts(accIds);
-    for(Account acc:accMap.values()) {
+    Map<Id,SObject> accMap = AsyncTriggerHelper.getRecordsMap(accIds);
+    for(Account acc:(List<Account>)accMap.values()) {
         if(String.isNotBlank(acc.BillingCity) || String.isNotBlank(acc.ShippingCity)) {
             String city = String.isNotBlank(acc.BillingCity) ? acc.BillingCity : acc.ShippingCity;
             weatherMap.put(acc.Id, city);
         }
     }
 
-    if(!accMap.isEmpty()) {
+    if(!weatherMap.isEmpty()) {
         AccountWeatherService.async_getWeather(weatherMap);
     }
+    DebugLog.add('END Async_CallTrigger');
+    DebugLog.saveLog();
 }

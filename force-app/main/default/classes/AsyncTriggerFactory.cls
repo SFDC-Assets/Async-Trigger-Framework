@@ -2,53 +2,57 @@ public class AsyncTriggerFactory {
 
 	public class AsyncTriggerFactoryException extends Exception {}
 
+	// appened to the end of a trigger handler class.
+	// AccountChangeEvent's handler would be named Account_ATH
+	private static String triggerHandlerSuffix = '_ATH';
+
+
 	// THIS IS THE ENTRY POINT
-	public static void initialize(Schema.SObjectType sType) {
+	public static void initialize(Schema.DescribeSObjectResult dsr) {
         // create instance of trigger handler for SOBJECT
-        AsyncTriggerBase handler = getHandler(sType);
+        AsyncTriggerBase handler = getHandler(dsr);
         // if a trigger handler was found
         if(handler != null) { 
             // run the trigger handler
             execute(handler);
         } else {
             // if no trigger handler is found, write debug
-            System.debug(
+            DebugLog.add(
                 'There is no handler for ' + 
-                sType.getDescribe().getLabel() + 
-                ' (' + sType.getDescribe().getName() + ')' + 
+                dsr.getLabel() + 
+                ' (' + dsr.getName() + ')' + 
                 '. If there should be, please check that your handler '+
                 'follows the naming convention and that it extends AsyncTriggerBase.'
             );
         }
+		DebugLog.saveLog();
 	}
 
 	// execute the trigger handler
 	private static void execute(AsyncTriggerBase handler) {
         // grab data and put together information on changes
-        handler.triggerSetup();
+		handler.triggerSetup();
         // run the trigger logic
         if(!handler.recordsMapByContext.get('CREATE').isEmpty()) {
             handler.isInsert(handler.recordsMapByContext.get('CREATE'));
         }
         if(!handler.recordsMapByContext.get('UPDATE').isEmpty()) {
-            handler.isInsert(handler.recordsMapByContext.get('UPDATE'));
+            handler.isUpdate(handler.recordsMapByContext.get('UPDATE'));
         }
         if(!handler.recordsMapByContext.get('DELETE').isEmpty()) {
-            handler.isInsert(handler.recordsMapByContext.get('DELETE'));
+            handler.isDelete(handler.recordsMapByContext.get('DELETE'));
         }
         if(!handler.recordsMapByContext.get('UNDELETE').isEmpty()) {
-            handler.isInsert(handler.recordsMapByContext.get('UNDELETE'));
-        }
+            handler.isUndelete(handler.recordsMapByContext.get('UNDELETE'));
+		}
 	}
 
-	private static String triggerHandlerSuffix = '_ATH';
-
-	private static AsyncTriggerBase getHandler(Schema.SObjectType sType) {
+	private static AsyncTriggerBase getHandler(Schema.DescribeSObjectResult dsr) {
 		AsyncTriggerBase handlerClass;
 		try {
 			// this is where the conversion from SObject name to 
 			// trigger handler class name happens
-			String className = sType.getDescribe().getName();
+			String className = dsr.getName();
 			// call method to convert the object name to handler class name
 			className = convertObjectNameToHandlerName(className);
 			// create an instance of the trigger handler class
@@ -63,29 +67,29 @@ public class AsyncTriggerFactory {
 	public static String convertObjectNameToHandlerName(String sObjectName) {
 		String className;
 		try {
-			System.debug('convertObjectNameToHandlerName("'+sObjectName+'")');
+			DebugLog.add('convertObjectNameToHandlerName("'+sObjectName+'")');
 			// removes __c from custom objects
 			className = sObjectName.removeEnd('__c');
-			System.debug('"'+className+'" removed custom object suffix');
+			DebugLog.add('"'+className+'" removed custom object suffix');
 			// adds trigger handler suffix to sObject name
 			className += triggerHandlerSuffix;
-			System.debug('"'+className+'" added trigger handler suffix');
+			DebugLog.add('"'+className+'" added trigger handler suffix');
 			// normalizes underscores (in the case of objects with a namespace)
 			classname = className.replace('__','_');
-			System.debug('"'+className+'" normalized underscores ');
+			DebugLog.add('"'+className+'" normalized underscores ');
 			// the limit for a class name is 40 characters
 			// if, at this point, the name is longer than 40 characters
 			if(className.length() > 40) {
 				// remove characters from the beginning to bring the name down to 40 characters
 				className = className.subString(className.length()-40,className.length());
-				System.debug('"'+className+'" class name was greater than 40 characters');
+				DebugLog.add('"'+className+'" class name was greater than 40 characters');
 			}
 			// if removing extra characters from the beginning made the class name
 			// start with an underscore (underbar) remove that character
 			className = className.removeStart('_');
-			System.debug('"'+className+'" removed beginning underscore');
+			DebugLog.add('"'+className+'" removed beginning underscore');
 		} catch(Exception e) {
-			System.debug('\nEXCEPTION WHEN TRYING TO CREATE NAME\n'+e.getMessage()+'\n'+e.getStackTraceString()+'\n');
+			DebugLog.add('\nEXCEPTION WHEN TRYING TO CREATE NAME\n'+e.getMessage()+'\n'+e.getStackTraceString()+'\n');
 		}
 		return className;
 	}
