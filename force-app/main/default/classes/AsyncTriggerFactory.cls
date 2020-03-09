@@ -17,7 +17,7 @@ public class AsyncTriggerFactory {
             execute(handler);
         } else {
             // if no trigger handler is found, write debug
-            DebugLog.add(
+            System.debug(
                 'There is no handler for ' + 
                 dsr.getLabel() + 
                 ' (' + dsr.getName() + ')' + 
@@ -25,7 +25,6 @@ public class AsyncTriggerFactory {
                 'follows the naming convention and that it extends AsyncTriggerBase.'
             );
         }
-		DebugLog.saveLog();
 	}
 
 	// execute the trigger handler
@@ -67,29 +66,29 @@ public class AsyncTriggerFactory {
 	public static String convertObjectNameToHandlerName(String sObjectName) {
 		String className;
 		try {
-			DebugLog.add('convertObjectNameToHandlerName("'+sObjectName+'")');
+			System.debug('convertObjectNameToHandlerName("'+sObjectName+'")');
 			// removes __c from custom objects
 			className = sObjectName.removeEnd('__c');
-			DebugLog.add('"'+className+'" removed custom object suffix');
+			System.debug('"'+className+'" removed custom object suffix');
 			// adds trigger handler suffix to sObject name
 			className += triggerHandlerSuffix;
-			DebugLog.add('"'+className+'" added trigger handler suffix');
+			System.debug('"'+className+'" added trigger handler suffix');
 			// normalizes underscores (in the case of objects with a namespace)
 			classname = className.replace('__','_');
-			DebugLog.add('"'+className+'" normalized underscores ');
+			System.debug('"'+className+'" normalized underscores ');
 			// the limit for a class name is 40 characters
 			// if, at this point, the name is longer than 40 characters
 			if(className.length() > 40) {
 				// remove characters from the beginning to bring the name down to 40 characters
 				className = className.subString(className.length()-40,className.length());
-				DebugLog.add('"'+className+'" class name was greater than 40 characters');
+				System.debug('"'+className+'" class name was greater than 40 characters');
 			}
 			// if removing extra characters from the beginning made the class name
 			// start with an underscore (underbar) remove that character
 			className = className.removeStart('_');
-			DebugLog.add('"'+className+'" removed beginning underscore');
+			System.debug('"'+className+'" removed beginning underscore');
 		} catch(Exception e) {
-			DebugLog.add('\nEXCEPTION WHEN TRYING TO CREATE NAME\n'+e.getMessage()+'\n'+e.getStackTraceString()+'\n');
+			System.debug('\nEXCEPTION WHEN TRYING TO CREATE NAME\n'+e.getMessage()+'\n'+e.getStackTraceString()+'\n');
 		}
 		return className;
 	}

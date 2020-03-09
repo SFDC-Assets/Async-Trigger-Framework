@@ -5,11 +5,11 @@ public with sharing class AccountingService {
         // we know it's not real
         List<String> hugeList = new List<String>();
 
-        for(Integer i = 0; i < 50; i++) {
+        for(Integer i = 0; i < 100; i++) {
             hugeList.add(String.valueOf(i));
         }
 
-        for(Integer j = 0; j < 50; j++) {
+        for(Integer j = 0; j < 1000; j++) {
             JSON.serialize(hugeList);
         }
 

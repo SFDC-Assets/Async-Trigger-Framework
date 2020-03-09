@@ -1,5 +1,4 @@
 trigger Async_CallTrigger on Async_Call__e (after insert) {
-    DebugLog.add('START Async_CallTrigger');
     Map<Id,String> weatherMap = new Map<Id,String>();
     Set<Id> accIds = new Set<Id>();
 
@@ -18,6 +17,4 @@ trigger Async_CallTrigger on Async_Call__e (after insert) {
     if(!weatherMap.isEmpty()) {
         AccountWeatherService.async_getWeather(weatherMap);
     }
-    DebugLog.add('END Async_CallTrigger');
-    DebugLog.saveLog();
 }

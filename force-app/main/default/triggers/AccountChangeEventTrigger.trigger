@@ -1,5 +1,4 @@
 trigger AccountChangeEventTrigger on AccountChangeEvent (after insert) {
-    DebugLog.add('ENTERED AccountChangeEventTrigger');
     // un-comment below when using AsyncTriggerFactory
     AsyncTriggerFactory.initialize(SObjectType.Account);
 

@@ -17,21 +17,10 @@ public with sharing class AsyncTriggerHelper {
                 fields.add(dfr.getName());
             }
         }
-
-        try {
-            for(SObject sob:(List<SObject>)Database.query(
-                'SELECT ' + String.join(new List<String>(fields),',') + ' FROM ' + dsr.getName() + ' WHERE ID IN:recordIds'
-            )) {
-                recordMap.put(sob.Id, sob);
-            }
-            DebugLog.add('Number of ' +  dsr.getLabelPlural() + ' queried: ' + recordMap.values().size());
-            DebugLog.add(JSON.serialize(recordMap));
-        } catch (Exception e) {
-            DebugLog.add(
-                'ERROR: AsyncTriggerHelper.getRecordsMap' 
-                + '\n' + e.getMessage()
-                + '\n' + e.getStackTraceString()
-            );
+        for(SObject sob:(List<SObject>)Database.query(
+            'SELECT ' + String.join(new List<String>(fields),',') + ' FROM ' + dsr.getName() + ' WHERE ID IN:recordIds'
+        )) {
+            recordMap.put(sob.Id, sob);
         }
         return recordMap;
     }
