@@ -18,15 +18,11 @@ This framework is meant to put structure around asynchronous triggers to allow d
 
 There is a scratch org definition included in this project, so it can be easily spun up in a scratch org for testing. The examples are frivolous and do not map to any business requirements I have ever run into.
 
-AsyncTriggerFactory controls the runtime of all asynchronous triggers
-AsyncTriggerBase is extended by any new asynchronous trigger handlers
-AsyncTriggerHelper holds logic to setup the async trigger base
+AsyncTriggerFactory controls the runtime of all asynchronous triggers.
+AsyncTriggerBase is extended by any new asynchronous trigger handlers.
+AsyncTriggerHelper holds logic to setup the async trigger base.
 
 AccountChangeEventTrigger and Account_ATH are the examples of how to set this up.
-
-## Release History
-
-Initialization of the repo
 
 ## Maintainers
 [Pete O'Connell](https://github.com/iiretepii)
