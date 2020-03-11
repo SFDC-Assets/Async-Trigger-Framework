@@ -62,7 +62,7 @@ public class AsyncTriggerFactory {
 	}
 
 	// receives an object name and converts it to a trigger handler class name
-	public static String convertObjectNameToHandlerName(String sObjectName) {
+	private static String convertObjectNameToHandlerName(String sObjectName) {
 		String className;
 		try {
 			System.debug('convertObjectNameToHandlerName("'+sObjectName+'")');
