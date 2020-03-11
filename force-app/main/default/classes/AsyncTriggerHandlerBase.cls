@@ -28,7 +28,7 @@ public virtual class AsyncTriggerHandlerBase {
         populateRecordsMapByContext();
     }
 
-    public void populateChangeHeaderMap() {
+    private void populateChangeHeaderMap() {
  
         changeHeaderMap = new Map<Id,EventBus.ChangeEventHeader>();
         EventBus.ChangeEventHeader changeHeader;
@@ -41,7 +41,7 @@ public virtual class AsyncTriggerHandlerBase {
         }
     }
 
-    public void populateFieldsChanged() {
+    private void populateFieldsChanged() {
 
         fieldsChangedMap = new Map<Id,Set<String>>();
         EventBus.ChangeEventHeader ceh;
@@ -59,7 +59,7 @@ public virtual class AsyncTriggerHandlerBase {
         }
     }
 
-    public void populateRecordsMap() {
+    private void populateRecordsMap() {
 
         Map<Id,SObject> recordMap = new Map<Id,SObject>();
         Set<String> fields = new Set<String>{
@@ -84,7 +84,7 @@ public virtual class AsyncTriggerHandlerBase {
         }
     }
 
-    public void populateRecordsMapByContext() {
+    private void populateRecordsMapByContext() {
 
         recordsMapByContext = new Map<String,Map<Id,SObject>>();
 
