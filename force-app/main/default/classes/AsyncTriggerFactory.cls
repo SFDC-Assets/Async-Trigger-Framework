@@ -7,7 +7,7 @@ public class AsyncTriggerFactory {
 	// THIS IS THE ENTRY POINT
 	public static void initialize(Schema.DescribeSObjectResult dsr) {
         // create instance of trigger handler for SOBJECT
-        AsyncTriggerBase handler = getHandler(dsr);
+        AsyncTriggerHandlerBase handler = getHandler(dsr);
         // if a trigger handler was found
         if(handler != null) { 
             // run the trigger handler
@@ -19,13 +19,13 @@ public class AsyncTriggerFactory {
                 dsr.getLabel() + 
                 ' (' + dsr.getName() + ')' + 
                 '. If there should be, please check that your handler '+
-                'follows the naming convention and that it extends AsyncTriggerBase.'
+                'follows the naming convention and that it extends AsyncTriggerHandlerBase.'
             );
         }
 	}
 
 	// execute the trigger handler
-	private static void execute(AsyncTriggerBase handler) {
+	private static void execute(AsyncTriggerHandlerBase handler) {
         // grab data and put together information on changes
 		handler.triggerSetup();
         // run the trigger logic
@@ -43,8 +43,8 @@ public class AsyncTriggerFactory {
 		}
 	}
 
-	private static AsyncTriggerBase getHandler(Schema.DescribeSObjectResult dsr) {
-		AsyncTriggerBase handlerClass;
+	private static AsyncTriggerHandlerBase getHandler(Schema.DescribeSObjectResult dsr) {
+		AsyncTriggerHandlerBase handlerClass;
 		try {
 			// this is where the conversion from SObject name to 
 			// trigger handler class name happens
@@ -52,7 +52,7 @@ public class AsyncTriggerFactory {
 			// call method to convert the object name to handler class name
 			className = convertObjectNameToHandlerName(className);
 			// create an instance of the trigger handler class
-			handlerClass = (AsyncTriggerBase)Type.forName(className).newInstance(); // magic
+			handlerClass = (AsyncTriggerHandlerBase)Type.forName(className).newInstance(); // magic
 		} catch(Exception e) {
 			System.debug(e);
 		}
