@@ -1,7 +1,5 @@
 public class AsyncTriggerFactory {
 
-	public class AsyncTriggerFactoryException extends Exception {}
-
 	// appened to the end of a trigger handler class.
 	// AccountChangeEvent's handler would be named Account_ATH
 	private static String triggerHandlerSuffix = '_ATH';
@@ -91,7 +89,4 @@ public class AsyncTriggerFactory {
 		}
 		return className;
 	}
-
-	// makes this class exceptionable
-	private class TriggerException extends Exception {}
 }
