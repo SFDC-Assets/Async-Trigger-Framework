@@ -1,13 +1,13 @@
 // Weather call to OpenWeather API Version 2.5
 public class WeatherService {
 
-    public static String appId = '60cfe5ef8df7b68e2f97e1d571a49e57';
+    public static String appId = '<enter app ID here>';
     public static String url = 'https://api.openweathermap.org';
     public static String apiInfo = '/data/2.5/weather';
     public static String byZip = 'zip';
     public static String byCity = 'q';
 
-    // WeatherService.getWeather('Chicago');
+    // WeatherService.getWeather('New York');
 
     public static WeatherResponse getWeather(String cityName) {
 
