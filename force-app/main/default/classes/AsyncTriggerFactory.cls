@@ -6,7 +6,6 @@ public class AsyncTriggerFactory {
 	// AccountChangeEvent's handler would be named Account_ATH
 	private static String triggerHandlerSuffix = '_ATH';
 
-
 	// THIS IS THE ENTRY POINT
 	public static void initialize(Schema.DescribeSObjectResult dsr) {
         // create instance of trigger handler for SOBJECT
