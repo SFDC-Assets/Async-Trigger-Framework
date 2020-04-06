@@ -16,23 +16,43 @@ This framework is meant to put structure around asynchronous triggers to allow d
 
 ## Setup Instructions
 
-There is a scratch org definition included in this project, so it can be easily spun up in a scratch org for testing. The examples are frivolous and do not map to any business requirements I have ever run into.
+There is a scratch org definition included in this project, so it can be easily spun up in a scratch org for testing. To get strated with Salesforce DX [see this trailhead module](https://trailhead.salesforce.com/en/content/learn/projects/quick-start-salesforce-dx). To setup the project and get testing, you spin up the org from this definition.
 
-AsyncTriggerFactory controls the runtime of all asynchronous triggers.
+The example included in this repo is using the Account object and a trigger on the AccountChangeEvent. The setup for Change Data Capture is located in setup under `Integrations > Change Data Capture` ([trailhead module on Change Data Capture basics](https://trailhead.salesforce.com/en/content/learn/modules/change-data-capture)).
 
-AsyncTriggerBase is extended by any new asynchronous trigger handlers.
+The two most important classes in the repository are the `AsyncTriggerFactory` and `AsyncTriggerHandlerBase`. Creating an async trigger using this framework is as easy as calling the factory from a ChangeEvent trigger, then creating a handler class that is named correctly. Sounds exciting!!! I know! Here is an example using Account:
 
-AsyncTriggerHelper holds logic to setup the async trigger base.
+Calling the trigger factory from a change event trigger.
+```java
+trigger AccountChangeEventTrigger on AccountChangeEvent (after insert) {
+    AsyncTriggerFactory.initialize(SObjectType.Account);
+}
+```
+Creating a trigger that is named correctly. You'll notice that the class is named is `Account_ATH`. The naming convention is `<object name> + '_ATH'`. If you had a custom object named `Tiger Asset Line Item` and the API name is `Tiger_Asset_Line_Item__c`, the async trigger handler would be named `Tiger_Asset_Line_Item_ATH`.
+```java
+public with sharing class Account_ATH extends AsyncTriggerHandlerBase {
 
-AccountChangeEventTrigger and Account_ATH are the examples of how to set this up.
+    public override void isInsert(Map<Id,SObject> newMap) {
+        AccountingService.largeCalculation(newMap);
+    }
+
+    public override void isUpdate(Map<Id,SObject> newMap) {
+        AccountingService.largeCalculation(newMap);
+    }
+}
+```
+
+Here is a UML of the project
+![Asynchronous Trigger Factory UML](/images/AsyncTriggerFactory-UML.svg)
 
 ## Maintainers
 [Pete O'Connell](https://github.com/iiretepii)
 
 ## References
+* [Event Driven Architectures Developer Blog Post]()
 * [Change Data Capture Documentation](https://developer.salesforce.com/docs/atlas.en-us.change_data_capture.meta/change_data_capture/cdc_intro.htm)
 * [Change Event Message Structure](https://developer.salesforce.com/docs/atlas.en-us.change_data_capture.meta/change_data_capture/cdc_message_structure.htm)
-* [Developer Blog Post](https://developer.salesforce.com/blogs/2019/06/get-buildspiration-with-asynchronous-apex-triggers-in-summer-19.html)
+* [Async Triggers Developer Blog Post](https://developer.salesforce.com/blogs/2019/06/get-buildspiration-with-asynchronous-apex-triggers-in-summer-19.html)
 
 
 ## License
