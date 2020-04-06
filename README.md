@@ -42,7 +42,7 @@ public with sharing class Account_ATH extends AsyncTriggerHandlerBase {
 }
 ```
 
-Here is a UML of the project
+UML of project
 ![Asynchronous Trigger Factory UML](/images/AsyncTriggerFactory-UML.svg)
 
 ## Maintainers
