@@ -6,7 +6,12 @@ trigger Async_CallTrigger on Async_Call__e (after insert) {
         accIds.add(ac.Record_Id__c);
     }
 
-    Map<Id,SObject> accMap = AsyncTriggerHelper.getRecordsMap(accIds);
+    Map<Id,Account> accMap = new Map<Id,Account>([
+        SELECT  Id, BillingCity, ShippingCity
+        FROM    Account
+        WHERE   Id IN:accIds
+    ]);
+
     for(Account acc:(List<Account>)accMap.values()) {
         if(String.isNotBlank(acc.BillingCity) || String.isNotBlank(acc.ShippingCity)) {
             String city = String.isNotBlank(acc.BillingCity) ? acc.BillingCity : acc.ShippingCity;
