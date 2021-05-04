@@ -1,7 +1,7 @@
 // Weather call to OpenWeather API Version 2.5
 public class WeatherService {
 
-    public static String appId = '<enter app ID here>';
+    public static String appId = '<enter API key here>';
     public static String url = 'https://api.openweathermap.org';
     public static String apiInfo = '/data/2.5/weather';
     public static String byZip = 'zip';

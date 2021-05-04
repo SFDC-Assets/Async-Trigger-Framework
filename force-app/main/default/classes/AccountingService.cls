@@ -5,7 +5,7 @@ public with sharing class AccountingService {
         // we know it's not real
         List<String> hugeList = new List<String>();
 
-        for(Integer i = 0; i < 100; i++) {
+        for(Integer i = 0; i < 500; i++) {
             hugeList.add(String.valueOf(i));
         }
 

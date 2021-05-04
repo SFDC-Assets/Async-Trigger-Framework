@@ -61,7 +61,7 @@ public virtual class AsyncTriggerHandlerBase {
 
     private void populateRecordsMap() {
 
-        Map<Id,SObject> recordMap = new Map<Id,SObject>();
+        recordsMap = new Map<Id,SObject>();
         Set<String> fields = new Set<String>{
             'Id','Name','CreatedDate','LastModifiedDate',
             'CreatedById','LastModifiedById'
@@ -77,10 +77,12 @@ public virtual class AsyncTriggerHandlerBase {
             }
         }
 
+        Set<Id> fieldsChangedIds = fieldsChangedMap.keySet();
+
         for(SObject sob:(List<SObject>)Database.query(
-            'SELECT ' + String.join(new List<String>(fields),',') + ' FROM ' + dsr.getName() + ' WHERE ID IN:fieldsChangedMap.keySet()'
+            'SELECT ' + String.join(new List<String>(fields),',') + ' FROM ' + dsr.getName() + ' WHERE ID IN:fieldsChangedIds'
         )) {
-            recordMap.put(sob.Id, sob);
+            recordsMap.put(sob.Id, sob);
         }
     }
 

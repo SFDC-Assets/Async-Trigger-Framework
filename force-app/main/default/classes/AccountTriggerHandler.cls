@@ -9,7 +9,7 @@ public with sharing class AccountTriggerHandler {
             AccountingService.largeCalculation(newMap);
         }
     }
-
+/*
     public static void afterUpdate(Map<Id,Account> newMap) {
         // example for callout
         AccountWeatherService.fromTrigger_getWeather(newMap);
@@ -19,4 +19,5 @@ public with sharing class AccountTriggerHandler {
             AccountingService.largeCalculation(newMap);
         }
     }
+*/
 }
